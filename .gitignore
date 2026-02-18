@@ -1,0 +1,19 @@
+# Root level gitignore
+node_modules/
+.DS_Store
+*.log
+
+# Environment files - NEVER commit these
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Build outputs
+dist/
+.next/
+out/
+
+# Temp files
+downloads/
+temp/

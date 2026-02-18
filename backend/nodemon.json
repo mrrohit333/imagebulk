@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "dev": "ts-node -r dotenv/config --transpile-only src/server.ts"
+    }
+}

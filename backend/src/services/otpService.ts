@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 // In-memory OTP store: email → { otp, expires }
 // For production, replace with Redis
@@ -28,18 +28,12 @@ export const verifyOTP = (email: string, otp: string): boolean => {
 };
 
 export const sendOTPEmail = async (email: string, otp: string): Promise<void> => {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.GMAIL_USER,
-            pass: process.env.GMAIL_APP_PASSWORD,
-        },
-    });
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
-    await transporter.sendMail({
-        from: `"ImageBulk" <${process.env.GMAIL_USER}>`,
+    const { error } = await resend.emails.send({
+        from: 'ImageBulk <onboarding@resend.dev>',
         to: email,
-        subject: '🔐 Your ImageBulk Login OTP',
+        subject: '🔐 Your ImageBulk Verification OTP',
         html: `
             <!DOCTYPE html>
             <html>
@@ -49,8 +43,8 @@ export const sendOTPEmail = async (email: string, otp: string): Promise<void> =>
                         <h1 style="margin:0;color:#0a0a0f;font-size:24px;font-weight:900;">📷 ImageBulk</h1>
                     </div>
                     <div style="padding:40px;text-align:center;">
-                        <h2 style="color:#ffffff;margin:0 0 8px 0;font-size:20px;">Your Login OTP</h2>
-                        <p style="color:#a0aec0;margin:0 0 32px 0;">Use this code to complete your login. It expires in <strong style="color:#00ff9d;">5 minutes</strong>.</p>
+                        <h2 style="color:#ffffff;margin:0 0 8px 0;font-size:20px;">Your Verification OTP</h2>
+                        <p style="color:#a0aec0;margin:0 0 32px 0;">Use this code to complete your action. It expires in <strong style="color:#00ff9d;">5 minutes</strong>.</p>
                         <div style="background:#0a0a0f;border:2px solid #00ff9d;border-radius:12px;padding:24px;margin-bottom:32px;box-shadow:0 0 30px rgba(0,255,157,0.3);">
                             <span style="font-size:48px;font-weight:900;letter-spacing:16px;color:#00ff9d;">${otp}</span>
                         </div>
@@ -61,4 +55,8 @@ export const sendOTPEmail = async (email: string, otp: string): Promise<void> =>
             </html>
         `,
     });
+
+    if (error) {
+        throw new Error(`Resend error: ${error.message}`);
+    }
 };

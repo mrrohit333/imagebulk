@@ -45,9 +45,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Adsterra Banner Ad */}
-      <div className="flex justify-center my-8 md:my-12 px-4 overflow-hidden">
-        <div className="w-full max-w-[728px] overflow-x-auto no-scrollbar flex justify-center">
+      {/* Adsterra Banner Ad - Desktop Only to prevent overflow */}
+      <div className="hidden md:flex justify-center my-12 px-4">
+        <div className="w-full max-w-[728px] flex justify-center">
           <Script id="adsterra-config" strategy="afterInteractive">
             {`
               var atOptions = {

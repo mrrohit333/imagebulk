@@ -1,3 +1,4 @@
+import Script from "next/script";
 import Link from 'next/link';
 
 export default function HomePage() {
@@ -43,7 +44,25 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+   {/* Adsterra Banner Ad */}
+<div className="flex justify-center my-12">
+  <Script id="adsterra-config" strategy="afterInteractive">
+    {`
+      var atOptions = {
+        'key' : 'cc82ff47d7cc58fb997256de631f7d90',
+        'format' : 'iframe',
+        'height' : 90,
+        'width' : 728,
+        'params' : {}
+      };
+    `}
+  </Script>
 
+  <Script
+    src="https://www.highperformanceformat.com/cc82ff47d7cc58fb997256de631f7d90/invoke.js"
+    strategy="afterInteractive"
+  />
+</div>
       {/* Features Section */}
       <section className="py-24 relative">
         <div className="max-w-6xl mx-auto px-4">

@@ -223,3 +223,34 @@ input[type="range"]::-moz-range-thumb {
   background-color: rgba(0, 255, 157, 0.3);
   color: #ffffff;
 }
+
+/* Adsterra Responsive Scaling */
+.ad-scale-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 728px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.ad-scale-wrapper {
+  width: 728px;
+  height: 90px;
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 760px) {
+  .ad-scale-container {
+    --ad-width: 728;
+    --container-width: calc(100vw - 32px);
+    --scale: calc(var(--container-width) / var(--ad-width));
+    height: calc(90px * var(--scale));
+  }
+
+  .ad-scale-wrapper {
+    transform: scale(var(--scale));
+  }
+}

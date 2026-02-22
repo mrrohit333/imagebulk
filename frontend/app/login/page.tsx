@@ -33,7 +33,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 py-24 relative">
+        <div className="min-h-screen flex items-center justify-center px-4 py-24 relative overflow-hidden">
             <div className="absolute top-20 left-10 w-64 h-64 bg-neon-green/20 rounded-full blur-3xl animate-float"></div>
             <div className="absolute bottom-20 right-20 w-96 h-96 bg-neon-cyan/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
 
@@ -62,6 +62,7 @@ export default function LoginPage() {
                             required
                             className="w-full px-5 py-4 rounded-xl text-lg"
                             placeholder="you@example.com"
+                            autoComplete="email"
                         />
                     </div>
 
@@ -77,6 +78,7 @@ export default function LoginPage() {
                             required
                             className="w-full px-5 py-4 rounded-xl text-lg"
                             placeholder="••••••••"
+                            autoComplete="current-password"
                         />
                     </div>
 

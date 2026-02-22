@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Navbar />
-        <main className="min-h-screen bg-dark-bg relative">
+        <main className="min-h-screen bg-dark-bg relative overflow-x-hidden">
           {/* Subtle neon gradient overlay */}
           <div className="fixed inset-0 bg-gradient-to-br from-neon-green/5 via-transparent to-neon-cyan/5 pointer-events-none"></div>
           <div className="relative z-10">

@@ -102,7 +102,7 @@ export default function PricingPage() {
     };
 
     return (
-        <div className="min-h-screen py-16 md:py-24 px-4 relative">
+        <div className="min-h-screen py-16 md:py-24 px-4 relative overflow-hidden">
             {/* Background Effects */}
             <div className="absolute top-20 left-10 w-64 md:w-96 h-64 md:h-96 bg-neon-green/10 rounded-full blur-3xl animate-float"></div>
             <div className="absolute bottom-20 right-10 md:right-20 w-64 md:w-96 h-64 md:h-96 bg-neon-pink/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>

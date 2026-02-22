@@ -44,7 +44,7 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 py-24 relative">
+        <div className="min-h-screen flex items-center justify-center px-4 py-24 relative overflow-hidden">
             {/* Animated Background Elements */}
             <div className="absolute top-20 right-10 w-72 h-72 bg-neon-cyan/20 rounded-full blur-3xl animate-float"></div>
             <div className="absolute bottom-20 left-20 w-96 h-96 bg-neon-pink/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '1.5s' }}></div>
@@ -76,6 +76,7 @@ export default function RegisterPage() {
                             required
                             className="w-full px-5 py-4 rounded-xl text-lg"
                             placeholder="you@example.com"
+                            autoComplete="email"
                         />
                     </div>
 
@@ -91,6 +92,7 @@ export default function RegisterPage() {
                             required
                             className="w-full px-5 py-4 rounded-xl text-lg"
                             placeholder="••••••••"
+                            autoComplete="new-password"
                         />
                     </div>
 
@@ -106,6 +108,7 @@ export default function RegisterPage() {
                             required
                             className="w-full px-5 py-4 rounded-xl text-lg"
                             placeholder="••••••••"
+                            autoComplete="new-password"
                         />
                     </div>
 

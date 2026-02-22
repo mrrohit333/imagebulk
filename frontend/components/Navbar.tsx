@@ -11,6 +11,9 @@ export default function Navbar() {
     const [contactOpen, setContactOpen] = useState(false);
 
     // Feedback form state
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    // Feedback form state
     const [fbName, setFbName] = useState('');
     const [fbEmail, setFbEmail] = useState('');
     const [fbMessage, setFbMessage] = useState('');
@@ -45,6 +48,7 @@ export default function Navbar() {
     const handleLogout = () => {
         logout();
         setUser(null);
+        setMenuOpen(false);
         window.dispatchEvent(new Event('authChange'));
     };
 
@@ -97,15 +101,15 @@ export default function Navbar() {
                     <div className="flex justify-between items-center h-16">
                         {/* Logo */}
                         <Link href="/" className="flex items-center space-x-3 group">
-                            <div className="w-10 h-10 bg-gradient-to-br from-neon-green to-neon-cyan rounded-lg flex items-center justify-center neon-glow-green relative overflow-hidden">
-                                <span className="text-dark-bg font-black text-xl relative z-10">📷</span>
+                            <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-neon-green to-neon-cyan rounded-lg flex items-center justify-center neon-glow-green relative overflow-hidden">
+                                <span className="text-dark-bg font-black text-base md:text-xl relative z-10">📷</span>
                                 <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan to-neon-green opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </div>
-                            <span className="font-black text-xl gradient-text">ImageBulk</span>
+                            <span className="font-black text-lg md:text-xl gradient-text">ImageBulk</span>
                         </Link>
 
-                        {/* Navigation Links */}
-                        <div className="flex items-center space-x-6">
+                        {/* Desktop Navigation Links */}
+                        <div className="hidden md:flex items-center space-x-6">
                             {/* Contact Us — always visible */}
                             <button
                                 onClick={() => setContactOpen(true)}
@@ -119,20 +123,20 @@ export default function Navbar() {
                                 <>
                                     <Link
                                         href="/dashboard"
-                                        className="text-gray-300 hover:text-neon-green transition-colors relative group"
+                                        className="text-gray-300 hover:text-neon-green transition-colors relative group text-sm font-semibold"
                                     >
                                         Dashboard
                                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-neon-green to-neon-cyan group-hover:w-full transition-all duration-300"></span>
                                     </Link>
                                     <Link
                                         href="/pricing"
-                                        className="text-gray-300 hover:text-neon-cyan transition-colors relative group"
+                                        className="text-gray-300 hover:text-neon-cyan transition-colors relative group text-sm font-semibold"
                                     >
                                         Pricing
                                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-neon-cyan to-neon-pink group-hover:w-full transition-all duration-300"></span>
                                     </Link>
                                     <div className="flex items-center space-x-4">
-                                        <span className="px-4 py-1.5 glass-card text-neon-green text-sm font-bold rounded-full neon-glow-green animate-neon-pulse">
+                                        <span className="px-4 py-1.5 glass-card text-neon-green text-xs font-bold rounded-full neon-glow-green animate-neon-pulse">
                                             ⚡ {user.credits} credits
                                         </span>
                                         <button
@@ -147,30 +151,115 @@ export default function Navbar() {
                                 <>
                                     <Link
                                         href="/pricing"
-                                        className="text-gray-300 hover:text-neon-cyan transition-colors relative group"
+                                        className="text-gray-300 hover:text-neon-cyan transition-colors relative group text-sm font-semibold"
                                     >
                                         Pricing
                                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-neon-cyan to-neon-pink group-hover:w-full transition-all duration-300"></span>
                                     </Link>
                                     <Link
                                         href="/login"
-                                        className="text-gray-300 hover:text-neon-green transition-colors relative group"
+                                        className="text-gray-300 hover:text-neon-green transition-colors relative group text-sm font-semibold"
                                     >
                                         Login
                                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-neon-green to-neon-cyan group-hover:w-full transition-all duration-300"></span>
                                     </Link>
                                     <Link
                                         href="/register"
-                                        className="px-6 py-2 btn-neon rounded-lg transition-all text-sm font-bold"
+                                        className="px-6 py-2 btn-neon rounded-lg transition-all text-sm font-bold shadow-lg"
                                     >
                                         Get Started
                                     </Link>
                                 </>
                             )}
                         </div>
+
+                        {/* Mobile Menu Button */}
+                        <div className="md:hidden flex items-center">
+                            <button
+                                onClick={() => setMenuOpen(!menuOpen)}
+                                className="text-gray-300 hover:text-white p-2"
+                            >
+                                {menuOpen ? (
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                ) : (
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                                    </svg>
+                                )}
+                            </button>
+                        </div>
                     </div>
                 </div>
+
+                {/* Mobile Navigation Menu */}
+                {menuOpen && (
+                    <div className="md:hidden glass-card border-t border-white/10 px-4 py-6 space-y-4 animate-fadeIn">
+                        <button
+                            onClick={() => { setContactOpen(true); setMenuOpen(false); }}
+                            className="block w-full text-left text-gray-300 hover:text-neon-cyan font-bold py-2"
+                        >
+                            📞 Contact Us
+                        </button>
+
+                        {user ? (
+                            <>
+                                <Link
+                                    href="/dashboard"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="block text-gray-300 hover:text-neon-green font-bold py-2"
+                                >
+                                    📊 Dashboard
+                                </Link>
+                                <Link
+                                    href="/pricing"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="block text-gray-300 hover:text-neon-cyan font-bold py-2"
+                                >
+                                    💎 Pricing
+                                </Link>
+                                <div className="pt-4 border-t border-white/5 space-y-4">
+                                    <div className="px-4 py-2 glass-card text-neon-green text-sm font-bold rounded-xl text-center">
+                                        ⚡ {user.credits} credits
+                                    </div>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full px-6 py-3 glass-card text-gray-300 font-bold rounded-xl"
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    href="/pricing"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="block text-gray-300 hover:text-neon-cyan font-bold py-2"
+                                >
+                                    💎 Pricing
+                                </Link>
+                                <Link
+                                    href="/login"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="block text-gray-300 hover:text-neon-green font-bold py-2"
+                                >
+                                    🔑 Login
+                                </Link>
+                                <Link
+                                    href="/register"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="block w-full px-6 py-3 btn-neon rounded-xl font-bold text-center mt-4"
+                                >
+                                    🚀 Get Started
+                                </Link>
+                            </>
+                        )}
+                    </div>
+                )}
             </nav>
+
 
             {/* ── Contact Us Modal ── */}
             {contactOpen && (

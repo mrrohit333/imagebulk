@@ -37,10 +37,10 @@ export default function LoginPage() {
             <div className="absolute top-20 left-10 w-64 h-64 bg-neon-green/20 rounded-full blur-3xl animate-float"></div>
             <div className="absolute bottom-20 right-20 w-96 h-96 bg-neon-cyan/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
 
-            <div className="max-w-md w-full glass-card rounded-2xl p-10 relative z-10 animate-slideUp">
-                <div className="text-center mb-10">
-                    <h1 className="text-4xl font-black mb-3 gradient-text">Welcome Back</h1>
-                    <p className="text-gray-400 text-lg">Login to your ImageBulk account</p>
+            <div className="max-w-md w-full glass-card rounded-2xl p-6 md:p-10 relative z-10 animate-slideUp mx-auto">
+                <div className="text-center mb-8 md:mb-10">
+                    <h1 className="text-3xl md:text-4xl font-black mb-2 md:mb-3 gradient-text">Welcome Back</h1>
+                    <p className="text-gray-400 text-base md:text-lg">Login to your ImageBulk account</p>
                 </div>
 
                 {error && (

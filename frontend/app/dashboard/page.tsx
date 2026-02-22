@@ -72,38 +72,38 @@ export default function DashboardPage() {
 
     return (
         <ProtectedRoute>
-            <div className="max-w-6xl mx-auto px-4 py-24">
+            <div className="max-w-6xl mx-auto px-4 py-16 md:py-24">
                 {/* Header with Credits */}
-                <div className="mb-12 text-center">
-                    <h1 className="text-5xl md:text-6xl font-black mb-4 gradient-text animate-slideDown">Dashboard</h1>
-                    <p className="text-gray-400 text-xl">
+                <div className="mb-8 md:mb-12 text-center">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 gradient-text animate-slideDown">Dashboard</h1>
+                    <div className="text-gray-400 text-lg md:text-xl">
                         Welcome back! You have{' '}
-                        <span className="px-4 py-1.5 glass-card text-neon-green font-bold rounded-full neon-glow-green animate-neon-pulse inline-block">
+                        <span className="px-4 py-1.5 glass-card text-neon-green font-bold rounded-full neon-glow-green animate-neon-pulse inline-block mt-2 sm:mt-0">
                             ⚡ {user?.credits || 0} credits
                         </span>{' '}
                         remaining.
-                    </p>
+                    </div>
                 </div>
 
                 {/* Download Form */}
-                <div className="glass-card rounded-2xl p-10 mb-10 animate-slideUp neon-border-animated">
-                    <h2 className="text-3xl font-black mb-8 gradient-text">Download Images</h2>
+                <div className="glass-card rounded-2xl p-6 md:p-10 mb-8 md:mb-10 animate-slideUp neon-border-animated">
+                    <h2 className="text-2xl md:text-3xl font-black mb-6 md:mb-8 gradient-text">Download Images</h2>
 
                     {error && (
-                        <div className="mb-6 p-4 bg-neon-pink/10 border border-neon-pink/50 text-neon-pink rounded-lg">
+                        <div className="mb-6 p-4 bg-neon-pink/10 border border-neon-pink/50 text-neon-pink rounded-lg text-sm">
                             {error}
                         </div>
                     )}
 
                     {success && (
-                        <div className="mb-6 p-4 bg-neon-green/10 border border-neon-green/50 text-neon-green rounded-lg">
+                        <div className="mb-6 p-4 bg-neon-green/10 border border-neon-green/50 text-neon-green rounded-lg text-sm">
                             {success}
                         </div>
                     )}
 
-                    <form onSubmit={handleDownload} className="space-y-8">
+                    <form onSubmit={handleDownload} className="space-y-6 md:space-y-8">
                         <div>
-                            <label htmlFor="keyword" className="block text-sm font-bold text-gray-300 mb-3">
+                            <label htmlFor="keyword" className="block text-xs md:text-sm font-bold text-gray-400 mb-2 md:mb-3 uppercase tracking-wider">
                                 🔍 Search Keyword
                             </label>
                             <input
@@ -112,17 +112,17 @@ export default function DashboardPage() {
                                 value={keyword}
                                 onChange={(e) => setKeyword(e.target.value)}
                                 required
-                                className="w-full px-6 py-4 rounded-xl text-lg font-medium"
+                                className="w-full px-5 md:px-6 py-3.5 md:py-4 rounded-xl text-base md:text-lg font-medium"
                                 placeholder="e.g., sunset, business, technology"
                             />
                         </div>
 
                         <div>
-                            <div className="flex justify-between items-center mb-3">
-                                <label htmlFor="count" className="block text-sm font-bold text-gray-300">
+                            <div className="flex justify-between items-center mb-2 md:mb-3">
+                                <label htmlFor="count" className="block text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider">
                                     📊 Number of Images
                                 </label>
-                                <span className="text-3xl font-black text-neon-cyan">{count}</span>
+                                <span className="text-2xl md:text-3xl font-black text-neon-cyan">{count}</span>
                             </div>
                             <input
                                 id="count"
@@ -132,14 +132,14 @@ export default function DashboardPage() {
                                 step="10"
                                 value={count}
                                 onChange={(e) => setCount(Number(e.target.value))}
-                                className="w-full"
+                                className="w-full h-8 cursor-pointer accent-neon-cyan"
                             />
-                            <div className="flex justify-between text-xs text-gray-500 mt-2">
+                            <div className="flex justify-between text-[10px] md:text-xs text-gray-500 mt-1">
                                 <span>10</span>
                                 <span>50</span>
                                 <span>100</span>
                             </div>
-                            <p className="text-gray-400 text-sm mt-3">
+                            <p className="text-gray-400 text-xs md:text-sm mt-3 font-medium">
                                 💰 Cost: <span className="text-neon-green font-bold">{count} credits</span>
                             </p>
                         </div>
@@ -147,22 +147,22 @@ export default function DashboardPage() {
                         <button
                             type="submit"
                             disabled={loading || !user || user.credits < count}
-                            className="w-full px-8 py-5 btn-neon rounded-xl font-black text-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full px-6 md:px-8 py-4 md:py-5 btn-neon rounded-xl font-black text-lg md:text-xl disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                         >
-                            {loading ? '⏳ Downloading...' : `⬇️ Download ${count} Images`}
+                            {loading ? '⏳ Processing...' : `⬇️ Download ${count} Images`}
                         </button>
 
                         {user && user.credits < count && (
-                            <p className="text-neon-pink text-sm text-center font-semibold">
-                                ⚠️ Insufficient credits. Please purchase more credits.
+                            <p className="text-neon-pink text-xs md:text-sm text-center font-bold animate-pulse">
+                                ⚠️ Insufficient credits. Please purchase more.
                             </p>
                         )}
                     </form>
                 </div>
 
                 {/* Download History */}
-                <div className="glass-card rounded-2xl p-10 animate-slideUp" style={{ animationDelay: '0.2s' }}>
-                    <h2 className="text-3xl font-black mb-8 gradient-text">Download History</h2>
+                <div className="glass-card rounded-2xl p-6 md:p-10 animate-slideUp" style={{ animationDelay: '0.2s' }}>
+                    <h2 className="text-2xl md:text-3xl font-black mb-6 md:mb-8 gradient-text text-center md:text-left">Download History</h2>
                     {history.length === 0 ? (
                         <p className="text-gray-400 text-center py-12 text-lg">
                             📭 No downloads yet. Start by searching for images above!

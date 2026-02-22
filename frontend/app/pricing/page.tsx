@@ -102,47 +102,47 @@ export default function PricingPage() {
     };
 
     return (
-        <div className="min-h-screen py-24 px-4 relative">
+        <div className="min-h-screen py-16 md:py-24 px-4 relative">
             {/* Background Effects */}
-            <div className="absolute top-20 left-10 w-96 h-96 bg-neon-green/10 rounded-full blur-3xl animate-float"></div>
-            <div className="absolute bottom-20 right-20 w-96 h-96 bg-neon-pink/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute top-20 left-10 w-64 md:w-96 h-64 md:h-96 bg-neon-green/10 rounded-full blur-3xl animate-float"></div>
+            <div className="absolute bottom-20 right-10 md:right-20 w-64 md:w-96 h-64 md:h-96 bg-neon-pink/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
 
             <div className="max-w-6xl mx-auto relative z-10">
-                <div className="text-center mb-20 animate-slideDown">
-                    <h1 className="text-5xl md:text-6xl font-black mb-6">
+                <div className="text-center mb-12 md:mb-20 animate-slideDown px-2">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 md:mb-6 leading-tight">
                         <span className="gradient-text">Simple, Transparent</span>
                         <br />
                         <span className="text-white">Pricing</span>
                     </h1>
-                    <p className="text-xl md:text-2xl text-gray-400">
+                    <p className="text-lg md:text-2xl text-gray-400 max-w-2xl mx-auto">
                         Choose the plan that works best for you
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-3 gap-8 max-w-lg md:max-w-none mx-auto">
                     {plans.map((plan, index) => (
                         <div
                             key={plan.name}
-                            className={`glass-card rounded-2xl p-8 card-lift animate-slideUp relative ${plan.popular ? 'neon-border-animated' : ''
+                            className={`glass-card rounded-2xl p-6 md:p-8 card-lift animate-slideUp relative flex flex-col ${plan.popular ? 'neon-border-animated ring-2 ring-neon-green/30' : ''
                                 }`}
                             style={{ animationDelay: `${index * 0.1}s` }}
                         >
                             {plan.popular && (
-                                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                                    <span className="bg-gradient-to-r from-neon-green to-neon-cyan text-dark-bg px-6 py-2 rounded-full text-sm font-black neon-glow-green">
+                                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+                                    <span className="bg-gradient-to-r from-neon-green to-neon-cyan text-dark-bg px-5 md:px-6 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-black shadow-lg shadow-neon-green/20">
                                         ⭐ POPULAR
                                     </span>
                                 </div>
                             )}
 
-                            <div className="text-center mb-8">
-                                <div className="text-6xl mb-4">{plan.icon}</div>
-                                <h3 className="text-3xl font-black text-white mb-4">{plan.name}</h3>
+                            <div className="text-center mb-6 md:mb-8">
+                                <div className="text-5xl md:text-6xl mb-4">{plan.icon}</div>
+                                <h3 className="text-2xl md:text-3xl font-black text-white mb-2 md:mb-4">{plan.name}</h3>
                                 <div className="mb-4">
-                                    <span className="text-5xl font-black gradient-text">₹{plan.price}</span>
-                                    {plan.price > 0 && <span className="text-gray-400 ml-2">one-time</span>}
+                                    <span className="text-4xl md:text-5xl font-black gradient-text">₹{plan.price}</span>
+                                    {plan.price > 0 && <span className="text-gray-400 text-xs md:text-sm ml-2 font-medium">one-time</span>}
                                 </div>
-                                <p className="text-2xl font-bold text-neon-green">
+                                <p className="text-xl md:text-2xl font-black text-neon-green tracking-tight">
                                     {plan.credits} credits
                                 </p>
                             </div>
@@ -168,8 +168,8 @@ export default function PricingPage() {
                                     onClick={() => handlePurchase(plan.name)}
                                     disabled={loading}
                                     className={`w-full px-6 py-4 rounded-xl font-black text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${plan.popular
-                                            ? 'btn-neon'
-                                            : 'glass-card hover:border-neon-cyan text-white'
+                                        ? 'btn-neon'
+                                        : 'glass-card hover:border-neon-cyan text-white'
                                         }`}
                                 >
                                     {loading ? '⏳ Processing...' : '💳 Buy Now'}

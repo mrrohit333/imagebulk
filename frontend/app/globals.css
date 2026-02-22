@@ -228,9 +228,8 @@ input[type="range"]::-moz-range-thumb {
 .ad-scale-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
-  max-width: 728px;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -238,19 +237,24 @@ input[type="range"]::-moz-range-thumb {
 .ad-scale-wrapper {
   width: 728px;
   height: 90px;
-  transform-origin: center center;
   flex-shrink: 0;
+  transform-origin: top center;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .ad-scale-container {
-    --ad-width: 728;
-    --container-width: calc(100vw - 32px);
-    --scale: calc(var(--container-width) / var(--ad-width));
+    /* Calculate scale: (available width) / 728 */
+    --scale: calc((100vw - 32px) / 728);
     height: calc(90px * var(--scale));
   }
 
   .ad-scale-wrapper {
+    /* Use zoom for Chrome/Safari/Edge - much cleaner for layout */
+    zoom: var(--scale);
+    /* Fallback/Firefox scaling */
+    -moz-transform: scale(var(--scale));
+    -moz-transform-origin: top center;
     transform: scale(var(--scale));
+    transform-origin: top center;
   }
 }

@@ -35,13 +35,16 @@ export default function Navbar() {
 
         const handleStorageChange = () => refreshAuth();
         const handleAuthChange = () => refreshAuth();
+        const handleOpenContact = () => setContactOpen(true);
 
         window.addEventListener('storage', handleStorageChange);
         window.addEventListener('authChange', handleAuthChange);
+        window.addEventListener('openContact', handleOpenContact);
 
         return () => {
             window.removeEventListener('storage', handleStorageChange);
             window.removeEventListener('authChange', handleAuthChange);
+            window.removeEventListener('openContact', handleOpenContact);
         };
     }, []);
 

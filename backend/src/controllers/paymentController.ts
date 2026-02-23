@@ -6,8 +6,8 @@ import { createOrder, verifyPaymentSignature } from '../services/razorpayService
 
 // Pricing plans
 const PRICING = {
-    Basic: { price: 199, credits: 500 },
-    Pro: { price: 499, credits: 2000 },
+    Basic: { price: 29, credits: 500 },
+    Pro: { price: 49, credits: 1000 },
 };
 
 export const createOrderController = async (req: AuthRequest, res: Response): Promise<void> => {

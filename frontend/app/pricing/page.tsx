@@ -22,7 +22,7 @@ const plans = [
     },
     {
         name: 'Basic',
-        price: 199,
+        price: 29,
         credits: 500,
         features: ['500 credits', 'Priority support', 'All image formats'],
         popular: true,
@@ -30,9 +30,9 @@ const plans = [
     },
     {
         name: 'Pro',
-        price: 499,
-        credits: 2000,
-        features: ['2000 credits', 'Premium support', 'All features'],
+        price: 49,
+        credits: 1000,
+        features: ['1000 credits', 'Premium support', 'All features'],
         icon: '🚀',
     },
 ];
@@ -182,9 +182,12 @@ export default function PricingPage() {
                 <div className="mt-20 text-center animate-fadeIn" style={{ animationDelay: '0.6s' }}>
                     <p className="text-gray-400 text-lg">
                         Need more credits?{' '}
-                        <a href="mailto:support@imagebulk.com" className="text-neon-cyan hover:text-neon-pink font-bold transition-colors">
+                        <button
+                            onClick={() => window.dispatchEvent(new Event('openContact'))}
+                            className="text-neon-cyan hover:text-neon-pink font-bold transition-colors"
+                        >
                             Contact us
-                        </a>{' '}
+                        </button>{' '}
                         for custom plans
                     </p>
                 </div>

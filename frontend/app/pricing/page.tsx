@@ -5,6 +5,7 @@ import Link from 'next/link';
 import api from '@/lib/api';
 import { RazorpayOrderResponse } from '@/types';
 import { isAuthenticated } from '@/lib/auth';
+import SuccessModal from '@/components/SuccessModal';
 
 declare global {
     interface Window {
@@ -39,6 +40,8 @@ const plans = [
 
 export default function PricingPage() {
     const [loading, setLoading] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [successData, setSuccessData] = useState({ title: '', message: '' });
 
     const handlePurchase = async (plan: string) => {
         if (!isAuthenticated()) {
@@ -76,8 +79,11 @@ export default function PricingPage() {
                                 razorpaySignature: response.razorpay_signature,
                             });
 
-                            alert('Payment successful! Credits added to your account.');
-                            window.location.href = '/dashboard';
+                            setSuccessData({
+                                title: 'Payment Success!',
+                                message: 'Your credits have been added to your account. You can now start downloading images.'
+                            });
+                            setShowSuccess(true);
                         } catch (error) {
                             alert('Payment verification failed. Please contact support.');
                         }
@@ -192,6 +198,13 @@ export default function PricingPage() {
                     </p>
                 </div>
             </div>
+
+            <SuccessModal
+                isOpen={showSuccess}
+                onClose={() => setShowSuccess(false)}
+                title={successData.title}
+                message={successData.message}
+            />
         </div>
     );
 }

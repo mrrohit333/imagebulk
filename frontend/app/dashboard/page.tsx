@@ -3,7 +3,7 @@
 import { useState, useEffect, FormEvent } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import api from '@/lib/api';
-import { getUser } from '@/lib/auth';
+import { getUser, setUser as setAuthUser } from '@/lib/auth';
 import { User, DownloadLog } from '@/types';
 
 export default function DashboardPage() {
@@ -20,6 +20,7 @@ export default function DashboardPage() {
             try {
                 const userResponse = await api.get('/auth/me');
                 setUser(userResponse.data);
+                setAuthUser(userResponse.data);
 
                 const historyResponse = await api.get('/downloads/history');
                 setHistory(historyResponse.data.history);
@@ -58,6 +59,7 @@ export default function DashboardPage() {
             // Refresh user data and history
             const userResponse = await api.get('/auth/me');
             setUser(userResponse.data);
+            setAuthUser(userResponse.data);
 
             const historyResponse = await api.get('/downloads/history');
             setHistory(historyResponse.data.history);

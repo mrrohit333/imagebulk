@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { RazorpayOrderResponse } from '@/types';
-import { isAuthenticated } from '@/lib/auth';
+import { isAuthenticated, setUser as setAuthUser, getUser } from '@/lib/auth';
 import SuccessModal from '@/components/SuccessModal';
 
 declare global {
@@ -73,11 +73,20 @@ export default function PricingPage() {
                     order_id: orderId,
                     handler: async (response: any) => {
                         try {
-                            await api.post('/payments/razorpay/verify', {
+                            const verifyRes = await api.post('/payments/razorpay/verify', {
                                 razorpayOrderId: orderId,
                                 razorpayPaymentId: response.razorpay_payment_id,
                                 razorpaySignature: response.razorpay_signature,
                             });
+
+                            // Sync credits across site
+                            const currentUser = getUser();
+                            if (currentUser) {
+                                setAuthUser({
+                                    ...currentUser,
+                                    credits: verifyRes.data.totalCredits
+                                });
+                            }
 
                             setSuccessData({
                                 title: 'Payment Success!',

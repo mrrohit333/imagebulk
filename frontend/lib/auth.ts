@@ -37,6 +37,8 @@ export const getUser = (): User | null => {
 export const setUser = (user: User): void => {
     if (typeof window !== 'undefined') {
         localStorage.setItem('user', JSON.stringify(user));
+        // Dispatch event to notify other components (like Navbar)
+        window.dispatchEvent(new Event('authChange'));
     }
 };
 

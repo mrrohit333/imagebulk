@@ -26,7 +26,7 @@ export default function LoginPage() {
             window.dispatchEvent(new Event('authChange'));
             router.push('/dashboard');
         } catch (err: any) {
-            setError(err.response?.data?.error || 'Login failed');
+            setError(err.response?.data?.error || err.message || 'Login failed');
         } finally {
             setLoading(false);
         }

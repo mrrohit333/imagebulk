@@ -37,7 +37,7 @@ export default function RegisterPage() {
             window.dispatchEvent(new Event('authChange'));
             router.push('/dashboard');
         } catch (err: any) {
-            setError(err.response?.data?.error || 'Registration failed');
+            setError(err.response?.data?.error || err.message || 'Registration failed');
         } finally {
             setLoading(false);
         }

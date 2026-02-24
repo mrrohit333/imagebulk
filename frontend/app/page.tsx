@@ -45,28 +45,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Adsterra Banner Ad - Responsive Scaling */}
-      <div className="flex justify-center my-8 md:my-12 px-4">
-        <div className="ad-scale-container">
-          <div className="ad-scale-wrapper">
-            <Script id="adsterra-config" strategy="afterInteractive">
-              {`
-                var atOptions = {
-                  'key' : 'cc82ff47d7cc58fb997256de631f7d90',
-                  'format' : 'iframe',
-                  'height' : 90,
-                  'width' : 728,
-                  'params' : {}
-                };
-              `}
-            </Script>
-            <Script
-              src="https://www.highperformanceformat.com/cc82ff47d7cc58fb997256de631f7d90/invoke.js"
-              strategy="afterInteractive"
-            />
-          </div>
-        </div>
-      </div>
 
       {/* Features Section */}
       <section className="py-16 md:py-24 relative">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 
@@ -26,6 +27,10 @@ export default function RootLayout({
             {children}
           </div>
         </main>
+        <Script
+          src="https://pl28774851.effectivegatecpm.com/5c/ec/62/5cec6295b6f429689420d9c571e041c1.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

@@ -5,6 +5,9 @@ export interface IUser extends Document {
     passwordHash: string;
     credits: number;
     plan: 'Free' | 'Basic' | 'Pro';
+    isVerified: boolean;
+    verificationOTP?: string;
+    otpExpires?: Date;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -31,6 +34,12 @@ const UserSchema = new Schema<IUser>(
             enum: ['Free', 'Basic', 'Pro'],
             default: 'Free',
         },
+        isVerified: {
+            type: Boolean,
+            default: false,
+        },
+        verificationOTP: String,
+        otpExpires: Date,
     },
     {
         timestamps: true,

@@ -27,6 +27,9 @@ export default function LoginPage() {
             router.push('/dashboard');
         } catch (err: any) {
             setError(err.response?.data?.error || err.message || 'Login failed');
+            if (err.response?.data?.notVerified) {
+                // User is not verified
+            }
         } finally {
             setLoading(false);
         }

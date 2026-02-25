@@ -33,7 +33,8 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.0",
-    "nodemailer": "^6.9.0",
+    "nodemailer": "^6.10.1",
+    "@types/nodemailer": "^6.4.14",
     "razorpay": "^2.9.2",
     "resend": "^4.0.0"
   },

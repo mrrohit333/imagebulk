@@ -1,0 +1,10 @@
+import express from 'express';
+import { sendOtp, verifyOtp } from '../controllers/otpController';
+
+const router = express.Router();
+
+// Custom OTP API Routes
+router.post('/send-otp', sendOtp);
+router.post('/verify-otp', verifyOtp);
+
+export default router;

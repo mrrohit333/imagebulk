@@ -10,6 +10,8 @@ import authRoutes from './routes/auth';
 import downloadRoutes from './routes/downloads';
 import paymentRoutes from './routes/payments';
 import contactRoutes from './routes/contact';
+import otpRoutes from './routes/otp';
+
 
 // Load environment variables
 dotenv.config();
@@ -40,6 +42,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/downloads', downloadRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api', otpRoutes);
 
 // Health check endpoint
 app.get('/health', (req: Request, res: Response) => {

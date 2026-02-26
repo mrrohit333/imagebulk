@@ -13,7 +13,7 @@ export const sendVerificationEmail = async (email: string, otp: string): Promise
         'https://api.mailersend.com/v1/email',
         {
             from: {
-                email: process.env.EMAIL_FROM_ADDRESS || 'noreply@trial-jy7zpl9pkkrl5vx6.mlsendmail.com',
+                email: process.env.EMAIL_FROM_ADDRESS || 'noreply@test-3m5jgroedrzgdpyo.mlsender.net',
                 name: process.env.EMAIL_FROM_NAME || 'ImageBulk',
             },
             to: [{ email }],

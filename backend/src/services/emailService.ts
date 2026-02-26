@@ -1,17 +1,19 @@
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import nodemailer from 'nodemailer';
 
 export const sendVerificationEmail = async (email: string, otp: string): Promise<void> => {
-    if (!process.env.RESEND_API_KEY) {
-        console.error('[EMAIL] RESEND_API_KEY not set. Skipping email.');
-        console.log(`[DEV] OTP for ${email}: ${otp}`);
-        return;
-    }
+    const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        secure: false, // STARTTLS on port 587
+        auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+        },
+    });
 
-    const { error } = await resend.emails.send({
-        from: 'ImageBulk <onboarding@resend.dev>',
-        to: [email],
+    const mailOptions = {
+        from: process.env.EMAIL_FROM || '"ImageBulk" <mrproducts.pvtltd@gmail.com>',
+        to: email,
         subject: '🔐 Verify Your ImageBulk Account',
         html: `
             <!DOCTYPE html>
@@ -33,9 +35,7 @@ export const sendVerificationEmail = async (email: string, otp: string): Promise
             </body>
             </html>
         `,
-    });
+    };
 
-    if (error) {
-        throw new Error(`Resend error: ${error.message}`);
-    }
+    await transporter.sendMail(mailOptions);
 };

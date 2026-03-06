@@ -58,13 +58,17 @@ export const downloadImagesController = async (req: AuthRequest, res: Response):
             count,
         });
 
-        // Send ZIP file
+        // Return JSON with download URL (works for both web and mobile)
+        // ZIP is served via static file middleware at /downloads/
         const zipFilename = path.basename(zipPath);
-        res.download(zipPath, zipFilename, (err) => {
-            if (err) {
-                console.error('Error sending file:', err);
-            }
-            // File will be cleaned up by a cleanup job or manually
+        const downloadUrl = `/downloads/${zipFilename}`;
+
+        res.json({
+            message: 'Images downloaded successfully',
+            downloadUrl,
+            imagesDownloaded: images.length,
+            creditsUsed: count,
+            remainingCredits: user.credits,
         });
     } catch (error: any) {
         console.error('Download error:', error);

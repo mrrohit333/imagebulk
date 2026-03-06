@@ -25,7 +25,7 @@ app.set('trust proxy', 1);
 
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: true,   // Allow all origins (needed for mobile app + web)
     credentials: true,
 }));
 app.use(express.json());

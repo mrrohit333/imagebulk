@@ -8,6 +8,14 @@ import { AuthProvider } from './src/context/AuthContext';
 import { AppProvider } from './src/context/AppContext';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { Colors } from './src/theme';
+import mobileAds from 'react-native-google-mobile-ads';
+
+mobileAds()
+  .initialize()
+  .then(adapterStatuses => {
+    // Initialization complete!
+    console.log('AdMob initialized:', adapterStatuses);
+  });
 
 function App(): React.JSX.Element {
   return (

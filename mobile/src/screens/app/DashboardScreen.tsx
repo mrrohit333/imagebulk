@@ -17,6 +17,10 @@ import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
 import { Colors, Radius, Spacing, Typography } from '../../theme';
 import { Config } from '../../config/env';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+
+// Use test ID for development, real one for production
+const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2682154071157592/5218900876';
 
 const COUNT_OPTIONS = [10, 20, 30, 50, 75, 100];
 
@@ -166,6 +170,17 @@ export const DashboardScreen: React.FC = () => {
                 </Card>
             ) : null}
 
+            {/* AdMob Banner */}
+            <View style={styles.adContainer}>
+                <BannerAd
+                    unitId={adUnitId}
+                    size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                    requestOptions={{
+                        requestNonPersonalizedAdsOnly: true,
+                    }}
+                />
+            </View>
+
             <LoadingOverlay visible={loading} message="Downloading images..." />
         </ScrollView>
     );
@@ -253,4 +268,10 @@ const styles = StyleSheet.create({
         marginBottom: Spacing.sm,
     },
     resultSubtitle: { color: Colors.textSecondary, fontSize: Typography.fontSizeSM },
+    adContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: Spacing.xl,
+        marginBottom: Spacing.xxl,
+    },
 });

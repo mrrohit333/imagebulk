@@ -104,6 +104,8 @@ export const verifyEmail = async (req: Request, res: Response): Promise<void> =>
                 plan: user.plan,
                 isVerified: user.isVerified,
                 createdAt: user.createdAt,
+                name: user.name,
+                profileImage: user.profileImage,
             },
         });
     } catch (error: any) {
@@ -186,6 +188,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
                 plan: user.plan,
                 isVerified: user.isVerified,
                 createdAt: user.createdAt,
+                name: user.name,
+                profileImage: user.profileImage,
             },
         });
     } catch (error: any) {
@@ -209,6 +213,8 @@ export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
             plan: user.plan,
             isVerified: user.isVerified,
             createdAt: user.createdAt,
+            name: user.name,
+            profileImage: user.profileImage,
         });
     } catch (error: any) {
         console.error('Get me error:', error);

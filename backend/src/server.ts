@@ -31,8 +31,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files (downloads)
+// Serve static files (downloads and uploads)
 app.use('/downloads', express.static(path.join(__dirname, '../downloads')));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Apply rate limiting to all API routes
 app.use('/api', apiLimiter);

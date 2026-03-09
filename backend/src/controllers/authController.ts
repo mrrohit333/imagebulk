@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
 import { validationResult } from 'express-validator';
 import { User } from '../models/User';
 import { generateToken } from '../config/jwt';
@@ -100,6 +102,8 @@ export const verifyEmail = async (req: Request, res: Response): Promise<void> =>
                 email: user.email,
                 credits: user.credits,
                 plan: user.plan,
+                isVerified: user.isVerified,
+                createdAt: user.createdAt,
             },
         });
     } catch (error: any) {
@@ -180,6 +184,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
                 email: user.email,
                 credits: user.credits,
                 plan: user.plan,
+                isVerified: user.isVerified,
+                createdAt: user.createdAt,
             },
         });
     } catch (error: any) {
@@ -201,10 +207,93 @@ export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
             email: user.email,
             credits: user.credits,
             plan: user.plan,
+            isVerified: user.isVerified,
             createdAt: user.createdAt,
         });
     } catch (error: any) {
         console.error('Get me error:', error);
         res.status(500).json({ error: 'Server error' });
+    }
+};
+
+export const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const { name, profileImageBase64 } = req.body;
+        const user = await User.findById(req.user?.userId);
+
+        if (!user) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+
+        if (name !== undefined) {
+            user.name = name;
+        }
+
+        if (profileImageBase64) {
+            const matches = profileImageBase64.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+            if (!matches || matches.length !== 3) {
+                res.status(400).json({ error: 'Invalid base64 string' });
+                return;
+            }
+
+            const imageBuffer = Buffer.from(matches[2], 'base64');
+            const fileExtension = matches[1].split('/')[1] === 'png' ? 'png' : 'jpg';
+
+            const uploadsDir = path.join(__dirname, '../../uploads');
+            if (!fs.existsSync(uploadsDir)) {
+                fs.mkdirSync(uploadsDir, { recursive: true });
+            }
+
+            const fileName = `user_${user._id}_${Date.now()}.${fileExtension}`;
+            const filePath = path.join(uploadsDir, fileName);
+
+            fs.writeFileSync(filePath, imageBuffer);
+
+            user.profileImage = `/uploads/${fileName}`;
+        }
+
+        await user.save();
+
+        res.json({
+            message: 'Profile updated successfully',
+            user: {
+                id: user._id,
+                email: user.email,
+                credits: user.credits,
+                plan: user.plan,
+                isVerified: user.isVerified,
+                createdAt: user.createdAt,
+                name: user.name,
+                profileImage: user.profileImage,
+            },
+        });
+    } catch (error: any) {
+        console.error('Update profile error:', error);
+        res.status(500).json({ error: 'Server error during profile update' });
+    }
+};
+
+export const deleteAccount = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const userId = req.user?.userId;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+
+        // Delete all user related data
+        const { DownloadLog } = await import('../models/DownloadLog');
+        await DownloadLog.deleteMany({ userId });
+
+        // Delete the user
+        await User.findByIdAndDelete(userId);
+
+        res.json({ message: 'Account successfully deleted' });
+    } catch (error: any) {
+        console.error('Delete account error:', error);
+        res.status(500).json({ error: 'Server error during account deletion' });
     }
 };

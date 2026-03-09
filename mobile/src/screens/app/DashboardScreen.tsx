@@ -32,6 +32,7 @@ export const DashboardScreen: React.FC = () => {
     const [selectedCount, setSelectedCount] = useState(10);
     const [loading, setLoading] = useState(false);
     const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+    const [adError, setAdError] = useState<string | null>(null);
 
     const creditsNeeded = selectedCount;
     const hasEnoughCredits = (user?.credits ?? 0) >= creditsNeeded;
@@ -172,19 +173,25 @@ export const DashboardScreen: React.FC = () => {
 
             {/* AdMob Banner */}
             <View style={styles.adContainer}>
-                <BannerAd
-                    unitId={adUnitId}
-                    size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-                    requestOptions={{
-                        requestNonPersonalizedAdsOnly: true,
-                    }}
-                    onAdLoaded={() => {
-                        console.log('Banner ad loaded successfully');
-                    }}
-                    onAdFailedToLoad={(error) => {
-                        console.warn('Banner ad failed to load:', error);
-                    }}
-                />
+                {adError ? (
+                    <Text style={styles.adErrorText}>Ad failed: {adError}</Text>
+                ) : (
+                    <BannerAd
+                        unitId={adUnitId}
+                        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                        }}
+                        onAdLoaded={() => {
+                            console.log('Banner ad loaded successfully');
+                            setAdError(null);
+                        }}
+                        onAdFailedToLoad={(error) => {
+                            console.warn('Banner ad failed to load:', error);
+                            setAdError(error.message);
+                        }}
+                    />
+                )}
             </View>
 
             <LoadingOverlay visible={loading} message="Downloading images..." />
@@ -281,5 +288,11 @@ const styles = StyleSheet.create({
         marginBottom: Spacing.xxl,
         minHeight: 60, // Ensure space for the banner
         width: '100%',
+    },
+    adErrorText: {
+        color: Colors.error,
+        fontSize: Typography.fontSizeXS,
+        textAlign: 'center',
+        paddingHorizontal: Spacing.lg,
     },
 });

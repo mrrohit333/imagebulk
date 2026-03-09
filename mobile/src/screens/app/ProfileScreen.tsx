@@ -112,7 +112,11 @@ export const ProfileScreen: React.FC = () => {
     const currentProfileImage = user?.profileImage ? `${Config.API_BASE_URL}${user.profileImage}` : null;
 
     return (
-        <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
+        <ScrollView
+            style={styles.screen}
+            contentContainerStyle={styles.content}
+            keyboardShouldPersistTaps="handled"
+        >
             {/* Avatar + Name */}
             <View style={styles.avatarSection}>
                 <View style={styles.avatarContainer}>

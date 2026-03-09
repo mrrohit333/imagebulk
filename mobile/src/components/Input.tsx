@@ -20,7 +20,7 @@ interface InputProps extends TextInputProps {
 }
 
 export const Input = forwardRef<TextInput, InputProps>(
-    ({ label, error, hint, rightIcon, containerStyle, isPassword, ...props }, ref) => {
+    ({ label, error, hint, rightIcon, containerStyle, isPassword, style, ...props }, ref) => {
         // NOTE: Do NOT useState for focus tracking — it causes re-renders which
         // trigger onBlur/onFocus loop on Android creating a focus-switch bug.
         const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +36,7 @@ export const Input = forwardRef<TextInput, InputProps>(
                     ]}>
                     <TextInput
                         ref={ref}
-                        style={styles.input}
+                        style={[styles.input, style]}
                         placeholderTextColor={Colors.textMuted}
                         secureTextEntry={isPassword && !showPassword}
                         selectionColor={Colors.neonGreen}

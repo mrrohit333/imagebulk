@@ -178,6 +178,12 @@ export const DashboardScreen: React.FC = () => {
                     requestOptions={{
                         requestNonPersonalizedAdsOnly: true,
                     }}
+                    onAdLoaded={() => {
+                        console.log('Banner ad loaded successfully');
+                    }}
+                    onAdFailedToLoad={(error) => {
+                        console.warn('Banner ad failed to load:', error);
+                    }}
                 />
             </View>
 
@@ -273,5 +279,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: Spacing.xl,
         marginBottom: Spacing.xxl,
+        minHeight: 60, // Ensure space for the banner
+        width: '100%',
     },
 });

@@ -90,3 +90,22 @@ export const getDownloadHistory = async (req: AuthRequest, res: Response): Promi
         res.status(500).json({ error: 'Failed to fetch download history' });
     }
 };
+
+export const deleteDownloadHistory = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const userId = req.user?.userId;
+        const { id } = req.params;
+
+        const entry = await DownloadLog.findOne({ _id: id, userId });
+        if (!entry) {
+            res.status(404).json({ error: 'History entry not found' });
+            return;
+        }
+
+        await DownloadLog.deleteOne({ _id: id, userId });
+        res.json({ message: 'History entry deleted' });
+    } catch (error: any) {
+        console.error('Delete history error:', error);
+        res.status(500).json({ error: 'Failed to delete history entry' });
+    }
+};

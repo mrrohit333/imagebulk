@@ -12,12 +12,14 @@ import { AuthStackParamList } from '../../navigation/AuthNavigator';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { AuthService } from '../../services/authService';
+import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
 import { Colors, Spacing, Typography } from '../../theme';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Register'>;
 
 export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
+    const { login } = useAuth();
     const { showToast } = useApp();
 
     const [name, setName] = useState('');
@@ -45,13 +47,13 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
         if (!validate()) { return; }
         setLoading(true);
         try {
-            await AuthService.register({
+            const { token, user } = await AuthService.register({
                 name: name.trim(),
                 email: email.trim().toLowerCase(),
                 password,
             });
-            showToast('success', 'OTP Sent!', `Check ${email} for your verification code`);
-            navigation.navigate('OTP', { email: email.trim().toLowerCase() });
+            await login(token, user);
+            showToast('success', 'Welcome!', `Account created. You have 20 free credits 🎉`);
         } catch (err: any) {
             const message = err?.response?.data?.error || 'Registration failed. Try again.';
             showToast('error', 'Registration Failed', message);

@@ -3,12 +3,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Colors } from '../theme';
 import { LoginScreen } from '../screens/auth/LoginScreen';
 import { RegisterScreen } from '../screens/auth/RegisterScreen';
-import { OTPScreen } from '../screens/auth/OTPScreen';
 
 export type AuthStackParamList = {
     Login: undefined;
     Register: undefined;
-    OTP: { email: string };
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -24,7 +22,6 @@ export const AuthNavigator: React.FC = () => {
             }}>
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
-            <Stack.Screen name="OTP" component={OTPScreen} />
         </Stack.Navigator>
     );
 };

@@ -1,18 +1,11 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { validationResult } from 'express-validator';
 import { User } from '../models/User';
 import { generateToken } from '../config/jwt';
 import { AuthRequest } from '../middleware/auth';
-import { sendVerificationEmail } from '../services/emailService';
-
-// Function to generate 6-digit OTP
-const generateOTP = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-};
 
 export const register = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -22,7 +15,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const { email, password } = req.body;
+        const { email, password, name } = req.body;
 
         const existingUser = await User.findOne({ email: email.toLowerCase() });
         if (existingUser) {
@@ -31,71 +24,23 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         }
 
         const passwordHash = await bcrypt.hash(password, 10);
-        const otp = generateOTP();
-        const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
         const user = await User.create({
             email: email.toLowerCase(),
             passwordHash,
+            name: name || undefined,
             credits: 20,
             plan: 'Free',
-            isVerified: false,
-            verificationOTP: otp,
-            otpExpires: otpExpires,
+            isVerified: true, // Auto-verified, no OTP required
         });
 
-        // Send verification email
-        try {
-            await sendVerificationEmail(user.email, otp);
-        } catch (mailError) {
-            console.error('Failed to send verification email:', mailError);
-            // We still created the user, they can request a resend later
-        }
-
-        res.status(201).json({
-            message: 'Registration successful. Please check your email for the verification code.',
-            email: user.email,
-        });
-    } catch (error: any) {
-        console.error('Register error:', error);
-        res.status(500).json({ error: 'Server error during registration' });
-    }
-};
-
-export const verifyEmail = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { email, otp } = req.body;
-
-        const user = await User.findOne({ email: email.toLowerCase() });
-        if (!user) {
-            res.status(404).json({ error: 'User not found' });
-            return;
-        }
-
-        if (user.isVerified) {
-            res.status(400).json({ error: 'Account is already verified' });
-            return;
-        }
-
-        if (user.verificationOTP !== otp || !user.otpExpires || user.otpExpires < new Date()) {
-            res.status(400).json({ error: 'Invalid or expired verification code' });
-            return;
-        }
-
-        // Mark as verified
-        user.isVerified = true;
-        user.verificationOTP = undefined;
-        user.otpExpires = undefined;
-        await user.save();
-
-        // Generate JWT token
         const token = generateToken({
             userId: user._id.toString(),
             email: user.email,
         });
 
-        res.json({
-            message: 'Email verified successfully',
+        res.status(201).json({
+            message: 'Registration successful',
             token,
             user: {
                 id: user._id,
@@ -109,37 +54,8 @@ export const verifyEmail = async (req: Request, res: Response): Promise<void> =>
             },
         });
     } catch (error: any) {
-        console.error('Verify error:', error);
-        res.status(500).json({ error: 'Server error during verification' });
-    }
-};
-
-export const resendOTP = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { email } = req.body;
-
-        const user = await User.findOne({ email: email.toLowerCase() });
-        if (!user) {
-            res.status(404).json({ error: 'User not found' });
-            return;
-        }
-
-        if (user.isVerified) {
-            res.status(400).json({ error: 'Account is already verified' });
-            return;
-        }
-
-        const otp = generateOTP();
-        user.verificationOTP = otp;
-        user.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
-        await user.save();
-
-        await sendVerificationEmail(user.email, otp);
-
-        res.json({ message: 'Verification code resent. Please check your email.' });
-    } catch (error: any) {
-        console.error('Resend OTP error:', error);
-        res.status(500).json({ error: 'Server error during resend' });
+        console.error('Register error:', error);
+        res.status(500).json({ error: 'Server error during registration' });
     }
 };
 
@@ -156,14 +72,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         const user = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, 'i') } });
         if (!user) {
             res.status(401).json({ error: 'Invalid credentials' });
-            return;
-        }
-
-        if (!user.isVerified) {
-            res.status(403).json({
-                error: 'Account not verified. Please verify your email first.',
-                notVerified: true
-            });
             return;
         }
 

@@ -29,15 +29,6 @@ export interface LoginPayload {
     password: string;
 }
 
-export interface VerifyEmailPayload {
-    email: string;
-    otp: string;
-}
-
-export interface ResendOTPPayload {
-    email: string;
-}
-
 export interface UpdateProfilePayload {
     name?: string;
     profileImageBase64?: string;
@@ -48,26 +39,10 @@ export interface UpdateProfilePayload {
 // ─────────────────────────────────────────────────────────────
 export const AuthService = {
     /**
-     * Register a new user. Backend sends OTP email, so no token is returned yet.
+     * Register a new user. Returns JWT + user immediately (no OTP required).
      */
-    register: async (payload: RegisterPayload): Promise<{ message: string }> => {
-        const { data } = await api.post<{ message: string }>('/api/auth/register', payload);
-        return data;
-    },
-
-    /**
-     * Verify email with OTP. Returns JWT + user on success.
-     */
-    verifyEmail: async (payload: VerifyEmailPayload): Promise<AuthResponse> => {
-        const { data } = await api.post<AuthResponse>('/api/auth/verify-email', payload);
-        return data;
-    },
-
-    /**
-     * Re-send OTP for a given email.
-     */
-    resendOTP: async (payload: ResendOTPPayload): Promise<{ message: string }> => {
-        const { data } = await api.post<{ message: string }>('/api/auth/resend-otp', payload);
+    register: async (payload: RegisterPayload): Promise<AuthResponse> => {
+        const { data } = await api.post<AuthResponse>('/api/auth/register', payload);
         return data;
     },
 
